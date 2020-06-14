@@ -1,10 +1,12 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
+import * as actions from '../store/actions/auth';
 
-const Login = () => {
+const Login = (props) => {
     const onFinish = values => {
-        console.log('Received values of form: ', values);
+        props.onAuth(values.username, values.password);
     };
 
     return (
@@ -52,4 +54,17 @@ const Login = () => {
     );
 };
 
-export default Login;
+const mapStateToProps = state => {
+    return {
+        loading: state.loading,
+        error: state.error
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: (username, password) => dispatch(actions.authLogin(username, password))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

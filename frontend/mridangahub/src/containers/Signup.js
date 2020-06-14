@@ -4,48 +4,20 @@ import {
     Input,
     Button,
 } from 'antd';
-
-const formItemLayout = {
-    labelCol: {
-        xs: {
-            span: 24,
-        },
-        sm: {
-            span: 8,
-        },
-    },
-    wrapperCol: {
-        xs: {
-            span: 24,
-        },
-        sm: {
-            span: 16,
-        },
-    },
-};
-const tailFormItemLayout = {
-    wrapperCol: {
-        xs: {
-            span: 24,
-            offset: 0,
-        },
-        sm: {
-            span: 16,
-            offset: 8,
-        },
-    },
-};
+import { connect } from 'react-redux';
+import * as actions from '../store/actions/auth';
 
 const Registration = () => {
     const [form] = Form.useForm();
 
     const onFinish = values => {
+        props.onAuth(values.username, values.password);
+
         console.log('Received values of form: ', values);
     };
 
     return (
         <Form
-            {...formItemLayout}
             form={form}
             name="register"
             onFinish={onFinish}
@@ -55,6 +27,7 @@ const Registration = () => {
             }}
             scrollToFirstError
         >
+            
             <Form.Item
                 name="email"
                 label="E-mail"
@@ -118,5 +91,18 @@ const Registration = () => {
         </Form>
     );
 };
+
+const mapStateToProps = state => {
+    return {
+        loading: state.loading,
+        error: state.error,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: (email, password, password2)
+    }
+}
 
 export default Registration;
